@@ -42,6 +42,8 @@ public class CompressionUtility {
             double currentLowerSlope = ((uncompressedData.get(1).getValue() - deadband) - uncompressedData.get(0).getValue()) / (uncompressedData.get(1).getTimestamp() - uncompressedData.get(0).getTimestamp());
             DataItem current = uncompressedData.get(1);
 
+            System.out.print("");
+
             // Do not evaluate the first and last data for deletion.
             for (int i = 1; i < uncompressedData.size() - 1; i++) {
 
@@ -59,12 +61,7 @@ public class CompressionUtility {
                 // The system always stores a value when the quality on the tag changes.
                 boolean didQualityChange = (snapshotQuality != currentQuality);
 
-                System.out.println("\n------------\nCurrent: " + current.getRowID() + " Value: " + current.getValue());
-                System.out.println("Current Upper Slope: " + currentUpperSlope);
-                System.out.println("Current Lower Slope: " + currentLowerSlope);
-                System.out.println("\nSnapshot: " + snapshot.getRowID() + " Value: " + snapshot.getValue());
-                System.out.println("Snapshot Upper Slope: " + snapshotUpperSlope);
-                System.out.println("Snapshot Lower Slope: " + snapshotLowerSlope);
+                System.out.print("");
 
                 if (didQualityChange) {
                     results.compressedData.add(current);
@@ -89,6 +86,8 @@ public class CompressionUtility {
 
                 }
 
+                System.out.print("");
+
                 current = snapshot;
 
             }
@@ -97,12 +96,9 @@ public class CompressionUtility {
         // Last value is never evaluated for deletion. Kept in data set for trending purposes.
         results.compressedData.add(uncompressedData.get(uncompressedData.size() - 1));
 
-        System.out.println(results);
-        return results;
-//        results.showContents();
-
 //        deleteData(results.deletedData);
 
+        return results;
     }
 
     public static void deleteData(ArrayList<DataItem> deletedData) {

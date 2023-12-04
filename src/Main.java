@@ -12,15 +12,14 @@ public class Main {
         example.add(new DataItem("F",100.0,192,1636409786810L));
 
 //        String filePath = "C:/Users/tdiggs/OneDrive - eogresources.com/Desktop/TestData.csv";
-        String filePath = "C:/Users/tdiggs/OneDrive - eogresources.com/Desktop/tagid-4028--table-sqlt_data4-2022_08.csv";
-
-        ArrayList<DataItem> data = CSVReaderUtility.CSVReader(filePath);
+//        String filePath = "C:/Users/tdiggs/OneDrive - eogresources.com/Desktop/tagid-4028--table-sqlt_data4-2022_08.csv";
+//
+//        ArrayList<DataItem> data = CSVReaderUtility.CSVReader(filePath);
 
         CompressionUtility compression = new CompressionUtility();
 
-        var results = compression.compressData(data, 0.13);
-
-        System.out.println();
+        var results = compression.compressData(example, 0.01);
+        System.out.println(results);
 
     }
 
