@@ -10,4 +10,18 @@ public class Results {
         return "\nKept: " + compressedData.size() + "\nDeleted: " + deletedData.size() + "\n";
     }
 
+    public void showContents() {
+
+        System.out.println("Compressed Data: ");
+        for (DataItem item : compressedData) {
+            System.out.println(item);
+        }
+
+        System.out.println("\nDeleted Data: ");
+        for (DataItem item : deletedData) {
+            System.out.println(item);
+        }
+
+    }
+
 }
