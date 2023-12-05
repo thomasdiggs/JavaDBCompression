@@ -3,16 +3,16 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
 
-        String filePath = "C:/Users/tdiggs/OneDrive - eogresources.com/Desktop/input.csv";
+        String inputFilePath = "C:/Users/tdiggs/OneDrive - eogresources.com/Desktop/input.csv";
         String outputFilePath = "C:/Users/tdiggs/OneDrive - eogresources.com/Desktop/output.csv";
-//        String filePath = "C:/Users/tdiggs/OneDrive - eogresources.com/Desktop/tagid-4028--table-sqlt_data4-2022_08.csv";
+        double deadband = 0.05;
 
-        CSVReaderUtility csvReader = new CSVReaderUtility();
-        ArrayList<DataItem> data = csvReader.CSVReader(filePath);
-
+        CSVUtilities csvUtility = new CSVUtilities();
+        ArrayList<DataItem> data = csvUtility.reader(inputFilePath);
         CompressionUtility compression = new CompressionUtility();
-        Results results = compression.compressData(data, 0.05);
-        CSVWriterUtility.csvWriter(results.compressedData, outputFilePath);
+        Results results = compression.compressData(data, deadband);
+        csvUtility.writer(results.compressedData, outputFilePath);
+
         System.out.println(results);
 
     }

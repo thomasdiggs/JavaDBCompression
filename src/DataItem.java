@@ -8,7 +8,7 @@ public class DataItem {
     private final double floatValue;
     private final int quality;
     private final LocalDateTime timestamp;
-    private ZoneId zoneId = ZoneId.systemDefault();
+    private final ZoneId zoneId = ZoneId.systemDefault();
 
     public DataItem(String rowID, double floatValue, int quality, String timestamp) {
         this.rowID = rowID;

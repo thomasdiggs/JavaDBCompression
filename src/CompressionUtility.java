@@ -38,8 +38,6 @@ public class CompressionUtility {
             results.compressedData.add(uncompressedData.get(0));
             DataItem lastKeptItem = uncompressedData.get(0);
 
-            System.out.print("");
-
             for (int i = 1; i < uncompressedData.size() - 1; i++) {
 
                 DataItem current = uncompressedData.get(i);
@@ -48,8 +46,6 @@ public class CompressionUtility {
                 double snapshotLowerSlope = ((snapshot.getValue() - deadband) - current.getValue()) / (snapshot.getEpochTime() - current.getEpochTime());
                 double currentUpperSlope = ((current.getValue() + deadband) - lastKeptItem.getValue()) / (current.getEpochTime() - lastKeptItem.getEpochTime());
                 double currentLowerSlope = ((current.getValue() - deadband) - lastKeptItem.getValue()) / (current.getEpochTime() - lastKeptItem.getEpochTime());
-
-                System.out.print("");
 
                 if (snapshot.getQuality() != current.getQuality()) {
 
@@ -80,13 +76,10 @@ public class CompressionUtility {
 
                 }
 
-                System.out.print("");
-
             }
 
         }
 
-        // Last value is never evaluated for deletion. Always kept in a finite data set.
         results.compressedData.add(uncompressedData.get(uncompressedData.size() - 1));
 
 //        deleteData(results.deletedData);

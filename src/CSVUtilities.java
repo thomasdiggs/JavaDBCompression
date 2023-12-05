@@ -1,11 +1,12 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class CSVReaderUtility {
+public class CSVUtilities {
 
-    public ArrayList<DataItem> CSVReader(String filePath) {
+    public ArrayList<DataItem> reader (String filePath) {
 
         String line;
 
@@ -28,10 +29,34 @@ public class CSVReaderUtility {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+
+            System.err.println("Error reading CSV file: " + e.getMessage());
+
         }
 
         return dataItems;
+
+    }
+
+    public void writer (ArrayList<DataItem> data, String filepath) {
+
+        try (FileWriter writer = new FileWriter(filepath)) {
+
+            for (DataItem row : data) {
+
+                writer.append(row.getRowID()).append(",");
+                writer.append(Double.toString(row.getValue())).append(",");
+                writer.append(Integer.toString(row.getQuality())).append(",");
+                writer.append(Long.toString(row.getEpochTime()));
+                writer.append("\n");
+
+            }
+
+        } catch (IOException e) {
+
+            System.err.println("Error writing CSV file: " + e.getMessage());
+
+        }
 
     }
 
