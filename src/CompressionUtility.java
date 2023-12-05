@@ -44,10 +44,10 @@ public class CompressionUtility {
 
                 DataItem current = uncompressedData.get(i);
                 DataItem snapshot = uncompressedData.get(i + 1);
-                double snapshotUpperSlope = ((snapshot.getValue() + deadband) - current.getValue()) / (snapshot.getTimestamp() - current.getTimestamp());
-                double snapshotLowerSlope = ((snapshot.getValue() - deadband) - current.getValue()) / (snapshot.getTimestamp() - current.getTimestamp());
-                double currentUpperSlope = ((current.getValue() + deadband) - lastKeptItem.getValue()) / (current.getTimestamp() - lastKeptItem.getTimestamp());
-                double currentLowerSlope = ((current.getValue() - deadband) - lastKeptItem.getValue()) / (current.getTimestamp() - lastKeptItem.getTimestamp());
+                double snapshotUpperSlope = ((snapshot.getValue() + deadband) - current.getValue()) / (snapshot.getEpochTime() - current.getEpochTime());
+                double snapshotLowerSlope = ((snapshot.getValue() - deadband) - current.getValue()) / (snapshot.getEpochTime() - current.getEpochTime());
+                double currentUpperSlope = ((current.getValue() + deadband) - lastKeptItem.getValue()) / (current.getEpochTime() - lastKeptItem.getEpochTime());
+                double currentLowerSlope = ((current.getValue() - deadband) - lastKeptItem.getValue()) / (current.getEpochTime() - lastKeptItem.getEpochTime());
 
                 System.out.print("");
 

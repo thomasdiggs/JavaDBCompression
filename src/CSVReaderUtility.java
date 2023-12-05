@@ -20,7 +20,7 @@ public class CSVReaderUtility {
                 String rowID = row[0];
                 float floatValue = Float.parseFloat(row[1]);
                 int quality = Integer.parseInt(row[2]);
-                long timeStamp = Long.parseLong(row[3]);
+                String timeStamp = row[3];
 
                 // Create a DataItem object and add it to the list
                 DataItem item = new DataItem(rowID, floatValue, quality, timeStamp);
