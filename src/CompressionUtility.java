@@ -1,6 +1,7 @@
 /*
 Summary of modified "Sliding Window" algorithm:
 
+The following algorithm essentially evaluates a set of data for deletion. Must be sorted by timestamp.
 The first and last values are never evaluated for deletion. Those are saved into ArrayList<DataItem> compressedData for the
 purposes of exporting to a CSV and compare trending against ArrayList<DataItem> uncompressedData. All values from each DataItem that
 meet the criteria for retention are kept in compressedData (or more accurately, they are never added to a list for deletion).
@@ -28,72 +29,64 @@ import java.util.ArrayList;
 
 public class CompressionUtility {
 
-    // This function essentially evaluates a set of data for deletion. Must be sorted by timestamp.
     public Results compressData(ArrayList<DataItem> uncompressedData, double deadband) {
 
         Results results = new Results();
 
         if (!(uncompressedData.size() <= 2)) {
 
-            // First value is never evaluated for deletion. Kept in data set for trending purposes.
             results.compressedData.add(uncompressedData.get(0));
-
-            double currentUpperSlope = ((uncompressedData.get(1).getValue() + deadband) - uncompressedData.get(0).getValue()) / (uncompressedData.get(1).getTimestamp() - uncompressedData.get(0).getTimestamp());
-            double currentLowerSlope = ((uncompressedData.get(1).getValue() - deadband) - uncompressedData.get(0).getValue()) / (uncompressedData.get(1).getTimestamp() - uncompressedData.get(0).getTimestamp());
-            DataItem current = uncompressedData.get(1);
+            DataItem lastKeptItem = uncompressedData.get(0);
 
             System.out.print("");
 
-            // Do not evaluate the first and last data for deletion.
             for (int i = 1; i < uncompressedData.size() - 1; i++) {
 
+                DataItem current = uncompressedData.get(i);
                 DataItem snapshot = uncompressedData.get(i + 1);
                 double snapshotUpperSlope = ((snapshot.getValue() + deadband) - current.getValue()) / (snapshot.getTimestamp() - current.getTimestamp());
                 double snapshotLowerSlope = ((snapshot.getValue() - deadband) - current.getValue()) / (snapshot.getTimestamp() - current.getTimestamp());
-                // If the newly calculated upper slope (snapshotUpperSlope) is lower than the previously calculated lower slope value (currentLowerSlope),
-                // the system will store the new value.
-                boolean conditionSnapshotUpperCompareToCurrentLower = (snapshotUpperSlope < currentLowerSlope);
-                // If the newly calculated lower slope (snapshotLowerSlope) is larger than the previously calculated upper slope value (currentUpperSlope),
-                // the system will store the new value.
-                boolean conditionSnapshotLowerCompareToCurrentUpper = (snapshotLowerSlope > currentUpperSlope);
-                int snapshotQuality = snapshot.getQuality();
-                int currentQuality = current.getQuality();
-                // The system always stores a value when the quality on the tag changes.
-                boolean didQualityChange = (snapshotQuality != currentQuality);
+                double currentUpperSlope = ((current.getValue() + deadband) - lastKeptItem.getValue()) / (current.getTimestamp() - lastKeptItem.getTimestamp());
+                double currentLowerSlope = ((current.getValue() - deadband) - lastKeptItem.getValue()) / (current.getTimestamp() - lastKeptItem.getTimestamp());
 
                 System.out.print("");
 
-                if (didQualityChange) {
-                    results.compressedData.add(current);
+                if (snapshot.getQuality() != current.getQuality()) {
+
+                        results.compressedData.add(current);
+
                 } else {
 
-                    if (conditionSnapshotUpperCompareToCurrentLower || conditionSnapshotLowerCompareToCurrentUpper) {
+                    if ((snapshotUpperSlope < currentLowerSlope) || (snapshotLowerSlope > currentUpperSlope)) {
+
                         results.compressedData.add(current);
                         currentLowerSlope = snapshotLowerSlope;
                         currentUpperSlope = snapshotUpperSlope;
+                        lastKeptItem = current;
+
                     } else {
+
                         results.deletedData.add(current);
-                        // In cases where a new value isn't stored, the system will compare the newly calculated slope values to the previously calculated values:
-                        // If the new upper slope is less than the previous upper slope, then the new upper slope is used for future comparisons.
-                        // If the new lower slope is greater than the previous lower slope, then the new lower slope is used for future comparisons.
+
                         if (snapshotUpperSlope < currentUpperSlope) {
                             currentUpperSlope = snapshotUpperSlope;
                         }
+
                         if (snapshotLowerSlope > currentLowerSlope) {
                             currentLowerSlope = snapshotLowerSlope;
                         }
+
                     }
 
                 }
 
                 System.out.print("");
 
-                current = snapshot;
-
             }
+
         }
 
-        // Last value is never evaluated for deletion. Kept in data set for trending purposes.
+        // Last value is never evaluated for deletion. Always kept in a finite data set.
         results.compressedData.add(uncompressedData.get(uncompressedData.size() - 1));
 
 //        deleteData(results.deletedData);

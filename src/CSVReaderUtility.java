@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class CSVReaderUtility {
 
-    public static ArrayList<DataItem> CSVReader(String filePath) {
+    public ArrayList<DataItem> CSVReader(String filePath) {
 
         String line;
 

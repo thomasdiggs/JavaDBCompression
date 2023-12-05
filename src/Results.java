@@ -7,7 +7,18 @@ public class Results {
 
     @Override
     public String toString() {
-        return "\nKept: " + compressedData.size() + "\nDeleted: " + deletedData.size() + "\n";
+        return "\nPreserved: " + compressedData.size() + "\nRemoved: " + deletedData.size();
+    }
+
+    public void showResults() {
+        System.out.println("\nCompressed Data\n----------");
+        for (DataItem datum : compressedData) {
+            System.out.println(datum);
+        }
+        System.out.println("\nDeleted Data\n----------");
+        for (DataItem datum : deletedData) {
+            System.out.println(datum);
+        }
     }
 
 }
