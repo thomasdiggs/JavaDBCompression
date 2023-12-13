@@ -2,7 +2,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class CSVUtilities {
 
@@ -47,7 +49,8 @@ public class CSVUtilities {
                 writer.append(row.getRowID()).append(",");
                 writer.append(Double.toString(row.getValue())).append(",");
                 writer.append(Integer.toString(row.getQuality())).append(",");
-                writer.append(Long.toString(row.getEpochTime()));
+//                writer.append(Long.toString(row.getEpochTime()));
+                writer.append(row.getTimestamp().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
                 writer.append("\n");
 
             }

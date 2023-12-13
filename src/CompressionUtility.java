@@ -35,35 +35,29 @@ public class CompressionUtility {
 
         if (!(uncompressedData.size() <= 2)) {
 
-            results.compressedData.add(uncompressedData.get(0));
-            DataItem lastKeptItem = uncompressedData.get(0);
+            results.compressedData.add(uncompressedData.getFirst());
+            DataItem current = uncompressedData.get(1);
+
+            double currentUpperSlope = ((current.getValue() + deadband) - uncompressedData.get(0).getValue()) / (current.getEpochTime() - uncompressedData.get(0).getEpochTime());
+            double currentLowerSlope = ((current.getValue() - deadband) - uncompressedData.get(0).getValue()) / (current.getEpochTime() - uncompressedData.get(0).getEpochTime());
 
             for (int i = 1; i < uncompressedData.size() - 1; i++) {
-
-                DataItem current = uncompressedData.get(i);
+                current = uncompressedData.get(i);
                 DataItem snapshot = uncompressedData.get(i + 1);
                 double snapshotUpperSlope = ((snapshot.getValue() + deadband) - current.getValue()) / (snapshot.getEpochTime() - current.getEpochTime());
                 double snapshotLowerSlope = ((snapshot.getValue() - deadband) - current.getValue()) / (snapshot.getEpochTime() - current.getEpochTime());
-                double currentUpperSlope = ((current.getValue() + deadband) - lastKeptItem.getValue()) / (current.getEpochTime() - lastKeptItem.getEpochTime());
-                double currentLowerSlope = ((current.getValue() - deadband) - lastKeptItem.getValue()) / (current.getEpochTime() - lastKeptItem.getEpochTime());
 
                 if (snapshot.getQuality() != current.getQuality()) {
-
                         results.compressedData.add(current);
-
                 } else {
 
                     if ((snapshotUpperSlope < currentLowerSlope) || (snapshotLowerSlope > currentUpperSlope)) {
-
                         results.compressedData.add(current);
                         currentLowerSlope = snapshotLowerSlope;
                         currentUpperSlope = snapshotUpperSlope;
-                        lastKeptItem = current;
-
                     } else {
 
                         results.deletedData.add(current);
-
                         if (snapshotUpperSlope < currentUpperSlope) {
                             currentUpperSlope = snapshotUpperSlope;
                         }
@@ -71,19 +65,12 @@ public class CompressionUtility {
                         if (snapshotLowerSlope > currentLowerSlope) {
                             currentLowerSlope = snapshotLowerSlope;
                         }
-
                     }
-
                 }
-
             }
-
         }
-
-        results.compressedData.add(uncompressedData.get(uncompressedData.size() - 1));
-
+        results.compressedData.add(uncompressedData.getLast());
 //        deleteData(results.deletedData);
-
         return results;
     }
 
