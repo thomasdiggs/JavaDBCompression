@@ -50,7 +50,7 @@ public class CSVUtilities {
                 writer.append(Double.toString(row.getValue())).append(",");
                 writer.append(Integer.toString(row.getQuality())).append(",");
 //                writer.append(Long.toString(row.getEpochTime()));
-                writer.append(row.getTimestamp().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+                writer.append(row.getTimestamp());
                 writer.append("\n");
 
             }

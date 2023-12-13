@@ -13,7 +13,7 @@ public class Main {
         Results results = compression.compressData(data, deadband);
         csvUtility.writer(results.compressedData, outputFilePath);
 
-//        csvUtility.writer(data,"C:/Users/tdiggs/OneDrive - eogresources.com/Desktop/inputDDMMYYYHHMMSS.csv");
+        csvUtility.writer(data,"C:/Users/tdiggs/OneDrive - eogresources.com/Desktop/inputDDMMYYYHHMMSS.csv");
 
         System.out.println(results);
 

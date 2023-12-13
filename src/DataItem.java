@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -23,11 +24,9 @@ public class DataItem {
 
     public int getQuality() { return quality; }
 
-    public LocalDateTime getTimestamp() { return timestamp; }
+    public String getTimestamp() { return timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")); }
 
-    public long getEpochTime() {
-        return timestamp.atZone(zoneId).toEpochSecond();
-    }
+    public long getEpochTime() { return timestamp.atZone(zoneId).toEpochSecond(); }
 
     @Override
     public String toString() {
